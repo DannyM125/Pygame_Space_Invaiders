@@ -1,7 +1,9 @@
 import pygame
 import random
 import math
+import sys
 import time
+
 pygame.init()  # SHOULD ALWAYS BE IN YOUR CODE
 # creates screen with pixel size
 screen = pygame.display.set_mode((800, 600))
@@ -23,8 +25,6 @@ playerX_change = 0
 playerY_change = 0
 
 # enemy
-# ready - you cant see the bullet/you have ammo
-# fire - no ammo / bullet moving
 enemyImg = pygame.image.load('enemy_1.png')   # imports image
 enemyX = random.randint(0, 736)  # starting pos
 enemyY = random.randint(50, 150)
@@ -70,7 +70,7 @@ def fire_bullet(x, y):
 
 
 def bulletCollision(enemyX, enemyY, bulletX, bulletY):
-    distance = math.sqrt(math.pow(enemyX - bulletX, 2) +(math.pow(enemyY - bulletY, 2)))  # distance formula
+    distance = math.sqrt(math.pow(enemyX - bulletX, 2) + (math.pow(enemyY - bulletY, 2)))  # distance formula
     if distance < 27:
         return True
     else:
@@ -79,7 +79,7 @@ def bulletCollision(enemyX, enemyY, bulletX, bulletY):
 
 
 def isEnemyCollision(enemyX, enemyY, playerX, playerY):
-    distance = math.sqrt(math.pow(enemyX - playerX, 2) +(math.pow(enemyY - playerY, 2)))  # distance formula
+    distance = math.sqrt(math.pow(enemyX - playerX, 2) + (math.pow(enemyY - playerY, 2)))  # distance formula
     if distance < 60:
         return True
     else:
@@ -100,15 +100,13 @@ def game_over_text():
 
 
 # GAME LOOP:
- # first 2 lines makes it loop untill "running" = false
-running = True
-while running == True:
-    # background makes things in the loop wayyyy slower because it takes more time too load
+while True:
     screen.blit(background, (0, 0))
     for event in pygame.event.get():
         # makes the window stay open until the x has been pressed.
         if event.type == pygame.QUIT:
-            running = False  # when running is false it ends the event loop
+            pygame.QUIT()
+            sys.exit()
 
 # if keystroke is pressed check whether its wasd
         if event.type == pygame.KEYDOWN:
@@ -137,6 +135,14 @@ while running == True:
 
     # enemy movement (only down)
     enemyY += enemyY_change
+    if score_value > 5:
+        enemyY_change = 1
+    elif score_value > 10:
+        enemyY_change = 2
+    elif score_value > 15:
+        enemyY_change = 5
+    elif score_value > 20:
+        enemyY_change = 6
 
 # checking for boundaries:
     if playerX < 0:
