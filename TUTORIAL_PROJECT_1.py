@@ -105,7 +105,7 @@ while True:
     for event in pygame.event.get():
         # makes the window stay open until the x has been pressed.
         if event.type == pygame.QUIT:
-            pygame.QUIT()
+            pygame.quit()
             sys.exit()
 
 # if keystroke is pressed check whether its wasd
